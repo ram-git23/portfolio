@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme{
+    --color-darkbg: #0D1821;
+    --color-lightbg: rgba(13, 87, 31, 0.7);
+    --font-lato:  'Lato', sans-serif;
+}
+
+@layer utilities {
+    .text-stroke {
+        -webkit-text-stroke: 1px #0D1821;
+        color: transparent;
+        font-family: "Lato", sans-serif;
+    }
+    .dark .text-stroke {
+        -webkit-text-stroke: 1px rgba(232, 232, 255, 0.7);
+        color: transparent;
+        font-family: "Lato", sans-serif;
+    }
+}
