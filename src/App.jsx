@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import emailjs from '@emailjs/browser';
-import { Mail, Phone, MapPin, Github, Linkedin, ExternalLink, Download, Send, User, Code, Briefcase, GraduationCap, AlignRight } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { NavBar } from "./components/NavBar.jsx";
-
-//npm install @emailjs/browser
+import { 
+    Mail, Phone, MapPin, Github, Linkedin, ExternalLink, 
+    Download, Send, Code, Briefcase, GraduationCap, 
+    Menu, X, Sun, Moon, ChevronDown
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const App = () => {
     const [formData, setFormData] = useState({
@@ -16,6 +17,7 @@ const App = () => {
     const [darkMode, setDarkMode] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState('');
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
     const handleInputChange = (e) => {
         setFormData({
@@ -29,8 +31,6 @@ const App = () => {
         setIsSubmitting(true);
 
         try {
-
-            // For demonstration, we'll simulate a delay
             await emailjs.send(
                 import.meta.env.VITE_SERVICE_ID,
                 import.meta.env.VITE_TEMPLATE_ID,
@@ -77,267 +77,442 @@ const App = () => {
         }
     ];
 
-    const htmlElement = document.documentElement; // <html> tag
-
-    function toggleDarkMode() {
-        htmlElement.classList.toggle('dark');
-    }
-
     useEffect(() => {
-        toggleDarkMode();
-    },[darkMode]);
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    }, [darkMode]);
 
-
+    const navItems = [
+        { href: '#home', label: 'Home' },
+        { href: '#about', label: 'About' },
+        { href: '#skills', label: 'Skills' },
+        { href: '#projects', label: 'Projects' },
+        { href: '#contact', label: 'Contact' }
+    ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br dark:from-darkbg dark:via-gray-800 dark:to-darkbg from-green-900/80 via-gray-300 to-green-900/80 bg-gray-100">
+        <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
             {/* Navigation */}
-            <NavBar darkMode={darkMode} setDarkMode={() => setDarkMode(d => !d)}/>
+            <nav className="fixed top-0 w-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-50 border-b border-gray-200 dark:border-slate-700">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center h-16">
+                        <div className="flex-shrink-0">
+                            <span className="text-2xl font-bold text-gradient">RAM B</span>
+                        </div>
+                        
+                        {/* Desktop Navigation */}
+                        <div className="hidden md:block">
+                            <div className="ml-10 flex items-baseline space-x-8">
+                                {navItems.map((item) => (
+                                    <a
+                                        key={item.href}
+                                        href={item.href}
+                                        className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 px-3 py-2 text-sm font-medium transition-colors"
+                                    >
+                                        {item.label}
+                                    </a>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex items-center space-x-4">
+                            {/* Theme Toggle */}
+                            <button
+                                onClick={() => setDarkMode(!darkMode)}
+                                className="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-700 transition-colors"
+                            >
+                                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                            </button>
+
+                            {/* Mobile menu button */}
+                            <div className="md:hidden">
+                                <button
+                                    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                    className="p-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-gray-300"
+                                >
+                                    {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Mobile Navigation */}
+                <AnimatePresence>
+                    {mobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="md:hidden bg-white dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700"
+                        >
+                            <div className="px-2 pt-2 pb-3 space-y-1">
+                                {navItems.map((item) => (
+                                    <a
+                                        key={item.href}
+                                        href={item.href}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="block px-3 py-2 text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-slate-800 rounded-md transition-colors"
+                                    >
+                                        {item.label}
+                                    </a>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </nav>
 
             {/* Hero Section */}
-            <section id="home" className="pt-24 pb-12 px-6">
-                <div className="max-w-6xl mx-auto text-center">
-                    <motion.h1 initial={{ opacity: 0, letterSpacing: '20px' }}
-                        animate={{ opacity: 1, letterSpacing: '10px' }}
-                        transition={{ duration: 1.5 }} className="text-5xl md:text-7xl text-stroke mb-3">
-                        RAM B
-                    </motion.h1>
-                    <p className="text-xl md:text-2xl dark:text-gray-300 text-green-950 font-bold mb-8">
-                        FULL STACK DEVELOPER | FRESHER
-                    </p>
-                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                        <a
-                            href={import.meta.env.VITE_RESUME_LINK}
-                            download
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="border-2 border-green-950 dark:border-gray-500 dark:text-gray-300 text-lightbg px-8 py-3 rounded-full hover:bg-green-950 hover:text-white transition-all transform hover:scale-105 text-center flex items-center justify-center gap-2"
+            <section id="home" className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.8 }}
                         >
-                            <Download size={20} />
-                            Download Resume
-                        </a>
-
-                        <a href="#contact" className="border-2 border-green-950 dark:border-gray-500 dark:text-gray-300 text-lightbg px-8 py-3 rounded-full hover:bg-green-950 hover:text-white transition-all transform hover:scale-105 text-center">
-                            Get In Touch
-                        </a>
+                            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6">
+                                Hi, I'm <span className="text-gradient">Ram B</span>
+                            </h1>
+                            <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
+                                Full Stack Developer passionate about creating innovative web solutions
+                            </p>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                                <a
+                                    href={import.meta.env.VITE_RESUME_LINK}
+                                    download
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors shadow-lg hover:shadow-xl transform hover:scale-105"
+                                >
+                                    <Download size={20} className="mr-2" />
+                                    Download Resume
+                                </a>
+                                <a
+                                    href="#contact"
+                                    className="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 dark:text-blue-400 hover:bg-blue-600 hover:text-white font-medium rounded-lg transition-all"
+                                >
+                                    Get In Touch
+                                </a>
+                            </div>
+                        </motion.div>
                     </div>
                 </div>
             </section>
 
             {/* About Section */}
-            <section id="about" className="px-6 pt-24 pb-12">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-4xl font-bold dark:text-white mb-12 text-center">About Me</h2>
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
+            <section id="about" className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-slate-800">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">About Me</h2>
+                        <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
+                    </div>
+                    
+                    <div className="grid lg:grid-cols-2 gap-12 items-center">
                         <div className="space-y-6">
-                            <p className="dark:text-gray-300 text-lg leading-relaxed">
+                            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                                 I'm a passionate full-stack developer with a fresh perspective and eagerness to contribute to innovative projects.
                                 Recently graduated with a degree in Computer Science, I've been building my skills through personal projects and internships.
                             </p>
-                            <p className="dark:text-gray-300 text-lg leading-relaxed">
+                            <p className="text-lg text-gray-600 dark:text-gray-300 leading-relaxed">
                                 I love creating clean, efficient code and building user-friendly applications that solve real-world problems.
                                 When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or learning about the latest industry trends.
                             </p>
-                            <div className="flex items-center gap-6">
-                                <div className="flex items-center gap-2 dark:text-purple-400">
-                                    <GraduationCap size={20} />
-                                    <span>Bachelor of Computer Applications (BCA)</span>
+                            
+                            <div className="grid sm:grid-cols-2 gap-4 pt-6">
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0">
+                                        <GraduationCap className="h-6 w-6 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Education</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300">Bachelor of Computer Applications</p>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-2 dark:text-purple-400">
-                                    <MapPin size={20} />
-                                    <span>Bengaluru, India</span>
+                                <div className="flex items-center space-x-3">
+                                    <div className="flex-shrink-0">
+                                        <MapPin className="h-6 w-6 text-blue-600" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Location</p>
+                                        <p className="text-sm text-gray-600 dark:text-gray-300">Bengaluru, India</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
+                        
+                        <div className="lg:pl-8">
+                            <div className="glass rounded-2xl p-8">
+                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">Quick Facts</h3>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600 dark:text-gray-300">Experience</span>
+                                        <span className="font-medium text-gray-900 dark:text-white">Fresher</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600 dark:text-gray-300">Projects Completed</span>
+                                        <span className="font-medium text-gray-900 dark:text-white">10+</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-600 dark:text-gray-300">Technologies</span>
+                                        <span className="font-medium text-gray-900 dark:text-white">15+</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Skills Section */}
-            <section id="skills" className="py-20 px-6 bg-black/20">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-4xl font-bold dark:text-white mb-12 text-center">Skills & Technologies</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <section id="skills" className="py-16 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Skills & Technologies</h2>
+                        <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                         {skills.map((skill, index) => (
-                            <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-4 text-center border border-white/20 hover:bg-white/20 transition-all transform hover:scale-105">
-                                <Code className="mx-auto mb-2 dark:text-purple-400" size={24} />
-                                <span className="dark:text-white font-medium">{skill}</span>
-                            </div>
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                className="glass rounded-xl p-4 text-center hover:shadow-lg transition-all duration-300 group"
+                            >
+                                <Code className="mx-auto mb-3 text-blue-600 group-hover:text-cyan-500 transition-colors" size={24} />
+                                <span className="text-sm font-medium text-gray-900 dark:text-white">{skill}</span>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* Projects Section */}
-            <section id="projects" className="py-20 px-6">
-                <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-bold dark:text-white mb-12 text-center">Featured Projects</h2>
+            <section id="projects" className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-slate-800">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Featured Projects</h2>
+                        <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
+                    </div>
+                    
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {projects.map((project, index) => (
-                            <div key={index} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all transform hover:scale-105">
+                            <motion.div
+                                key={index}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                className="bg-white dark:bg-slate-900 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-slate-700"
+                            >
                                 <div className="flex items-center mb-4">
-                                    <Briefcase className="dark:text-purple-400 mr-2" size={24} />
-                                    <h3 className="text-xl font-bold dark:text-white">{project.title}</h3>
+                                    <Briefcase className="text-blue-600 mr-3" size={24} />
+                                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">{project.title}</h3>
                                 </div>
-                                <p className="dark:text-gray-300 mb-4">{project.description}</p>
-                                <div className="flex flex-wrap gap-2 mb-4">
+                                <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">{project.description}</p>
+                                <div className="flex flex-wrap gap-2 mb-6">
                                     {project.technologies.map((tech, techIndex) => (
-                                        <span key={techIndex} className="bg-purple-600/30 dark:text-purple-300 px-3 py-1 rounded-full text-sm">
-                      {tech}
-                    </span>
+                                        <span
+                                            key={techIndex}
+                                            className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-sm rounded-full"
+                                        >
+                                            {tech}
+                                        </span>
                                     ))}
                                 </div>
                                 <div className="flex gap-4">
-                                    <a href={project.github} className="flex items-center gap-2 dark:text-purple-400 hover:text-purple-300 transition-colors">
+                                    <a
+                                        href={project.github}
+                                        className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                    >
                                         <Github size={16} />
                                         Code
                                     </a>
-                                    <a href={project.live} className="flex items-center gap-2 dark:text-purple-400 hover:text-purple-300 transition-colors">
+                                    <a
+                                        href={project.live}
+                                        className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                    >
                                         <ExternalLink size={16} />
                                         Live Demo
                                     </a>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* Contact Section */}
-            <section id="contact" className="py-20 px-6 bg-black/20">
-                <div className="max-w-4xl mx-auto">
-                    <h2 className="text-4xl font-bold dark:text-white mb-12 text-center">Get In Touch</h2>
-                    <div className="grid md:grid-cols-2 gap-12">
+            <section id="contact" className="py-16 px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto">
+                    <div className="text-center mb-12">
+                        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Get In Touch</h2>
+                        <div className="w-20 h-1 bg-blue-600 mx-auto"></div>
+                    </div>
+                    
+                    <div className="grid lg:grid-cols-2 gap-12">
                         <div className="space-y-8">
                             <div>
-                                <h3 className="text-2xl font-bold dark:text-white mb-6">Let's Connect</h3>
-                                <p className="dark:text-gray-300 text-lg mb-8">
+                                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Let's Connect</h3>
+                                <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
                                     I'm always open to discussing new opportunities, interesting projects, or just having a chat about technology.
                                     Feel free to reach out!
                                 </p>
                             </div>
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-4">
-                                    <div className="bg-purple-600 p-3 rounded-full">
-                                        <Mail size={20} className="dark:text-white" />
+                            
+                            <div className="space-y-6">
+                                <div className="flex items-center space-x-4">
+                                    <div className="flex-shrink-0">
+                                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                                            <Mail size={20} className="text-white" />
+                                        </div>
                                     </div>
                                     <div>
-                                        <p className="dark:text-white font-medium">Email</p>
-                                        <p className="dark:text-gray-400">alex.johnson@email.com</p>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Email</p>
+                                        <p className="text-gray-600 dark:text-gray-300">alex.johnson@email.com</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="bg-purple-600 p-3 rounded-full">
-                                        <Phone size={20} className="dark:text-white" />
+                                
+                                <div className="flex items-center space-x-4">
+                                    <div className="flex-shrink-0">
+                                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                                            <Phone size={20} className="text-white" />
+                                        </div>
                                     </div>
                                     <div>
-                                        <p className="dark:text-white font-medium">Phone</p>
-                                        <p className="dark:text-gray-400">+91 98765 43210</p>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Phone</p>
+                                        <p className="text-gray-600 dark:text-gray-300">+91 98765 43210</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-4">
-                                    <div className="bg-purple-600 p-3 rounded-full">
-                                        <MapPin size={20} className="dark:text-white" />
+                                
+                                <div className="flex items-center space-x-4">
+                                    <div className="flex-shrink-0">
+                                        <div className="w-12 h-12 bg-blue-600 rounded-lg flex items-center justify-center">
+                                            <MapPin size={20} className="text-white" />
+                                        </div>
                                     </div>
                                     <div>
-                                        <p className="dark:text-white font-medium">Location</p>
-                                        <p className="dark:text-gray-400">Bengaluru, Karnataka, India</p>
+                                        <p className="text-sm font-medium text-gray-900 dark:text-white">Location</p>
+                                        <p className="text-gray-600 dark:text-gray-300">Bengaluru, Karnataka, India</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex gap-4">
-                                <a href="#" className="bg-white/10 p-3 rounded-full hover:bg-white/20 transition-colors">
-                                    <Github size={24} className="dark:text-white" />
+                            
+                            <div className="flex space-x-4 pt-6">
+                                <a
+                                    href="#"
+                                    className="w-12 h-12 bg-gray-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-colors"
+                                >
+                                    <Github size={20} />
                                 </a>
-                                <a href="#" className="bg-white/10 p-3 rounded-full hover:bg-white/20 transition-colors">
-                                    <Linkedin size={24} className="dark:text-white" />
+                                <a
+                                    href="#"
+                                    className="w-12 h-12 bg-gray-100 dark:bg-slate-800 rounded-lg flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-600 hover:text-white transition-colors"
+                                >
+                                    <Linkedin size={20} />
                                 </a>
                             </div>
                         </div>
 
                         {/* Contact Form */}
-                        <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
-                            <div className="space-y-6">
+                        <div className="bg-white dark:bg-slate-900 rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-slate-700">
+                            <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
-                                    <label className="block dark:text-white font-medium mb-2">Name</label>
+                                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                        Name
+                                    </label>
                                     <input
                                         type="text"
                                         name="name"
                                         value={formData.name}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 dark:text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all"
+                                        className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                                         placeholder="Your Name"
                                     />
                                 </div>
+                                
                                 <div>
-                                    <label className="block dark:text-white font-medium mb-2">Email</label>
+                                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                        Email
+                                    </label>
                                     <input
                                         type="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 dark:text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all"
+                                        className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                                         placeholder="your.email@example.com"
                                     />
                                 </div>
+                                
                                 <div>
-                                    <label className="block dark:text-white font-medium mb-2">Subject</label>
+                                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                        Subject
+                                    </label>
                                     <input
                                         type="text"
                                         name="subject"
                                         value={formData.subject}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 dark:text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all"
+                                        className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                                         placeholder="Subject"
                                     />
                                 </div>
+                                
                                 <div>
-                                    <label className="block dark:text-white font-medium mb-2">Message</label>
+                                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                                        Message
+                                    </label>
                                     <textarea
                                         name="message"
                                         value={formData.message}
                                         onChange={handleInputChange}
                                         required
                                         rows={4}
-                                        className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 dark:text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 focus:bg-white/20 transition-all resize-none"
+                                        className="w-full px-4 py-3 border border-gray-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors resize-none"
                                         placeholder="Your message..."
                                     />
                                 </div>
+                                
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    onClick={handleSubmit}
-                                    className="w-full bg-[#0D1821] border-white/20 dark:text-white py-3 rounded-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium py-3 px-6 rounded-lg transition-colors flex items-center justify-center space-x-2"
                                 >
                                     {isSubmitting ? (
                                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
                                     ) : (
                                         <>
                                             <Send size={20} />
-                                            Send Message
+                                            <span>Send Message</span>
                                         </>
                                     )}
                                 </button>
+                                
                                 {submitStatus === 'success' && (
-                                    <p className="text-green-400 text-center">Message sent successfully!</p>
+                                    <p className="text-green-600 text-center font-medium">Message sent successfully!</p>
                                 )}
                                 {submitStatus === 'error' && (
-                                    <p className="text-red-400 text-center">Failed to send message. Please try again.</p>
+                                    <p className="text-red-600 text-center font-medium">Failed to send message. Please try again.</p>
                                 )}
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Footer */}
-            <footer className="py-8 px-6 border-t border-white/10">
-                <div className="max-w-6xl mx-auto text-center">
-                    <p className="dark:text-gray-400 text-green-950">
+            <footer className="py-8 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-slate-800 border-t border-gray-200 dark:border-slate-700">
+                <div className="max-w-7xl mx-auto text-center">
+                    <p className="text-gray-600 dark:text-gray-300">
                         © 2025 Ram B. All rights reserved.
                     </p>
                 </div>
