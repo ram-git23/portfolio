@@ -55,7 +55,6 @@ const App = () => {
             technologies: ['React', 'Node.js', 'Express', 'MongoDB', 'Stripe', 'Redis'],
             github: '#',
             live: '#',
-            featured: true,
             status: 'Completed',
             year: '2024'
         },
@@ -65,7 +64,6 @@ const App = () => {
             technologies: ['React', 'Firebase', 'Material-UI', 'Socket.io', 'Chart.js'],
             github: '#',
             live: '#',
-            featured: true,
             status: 'In Progress',
             year: '2024'
         },
@@ -75,7 +73,6 @@ const App = () => {
             technologies: ['JavaScript', 'D3.js', 'APIs', 'Chart.js', 'CSS3'],
             github: '#',
             live: '#',
-            featured: false,
             status: 'Completed',
             year: '2023'
         },
@@ -85,9 +82,26 @@ const App = () => {
             technologies: ['Python', 'React', 'FastAPI', 'PostgreSQL', 'ML'],
             github: '#',
             live: '#',
-            featured: false,
             status: 'Completed',
             year: '2023'
+        },
+        {
+            title: 'Real Estate Platform',
+            description: 'Modern real estate platform with property listings, virtual tours, mortgage calculator, and advanced search filters.',
+            technologies: ['Next.js', 'TypeScript', 'Prisma', 'PostgreSQL', 'Tailwind'],
+            github: '#',
+            live: '#',
+            status: 'Completed',
+            year: '2024'
+        },
+        {
+            title: 'Learning Management System',
+            description: 'Educational platform with course management, progress tracking, interactive quizzes, and video streaming capabilities.',
+            technologies: ['React', 'Node.js', 'MongoDB', 'Socket.io', 'AWS'],
+            github: '#',
+            live: '#',
+            status: 'In Progress',
+            year: '2024'
         }
     ];
 
@@ -369,15 +383,15 @@ const App = () => {
                         </p>
                     </motion.div>
                     
-                    {/* Featured Projects */}
+                    {/* Projects Grid */}
                     <motion.div
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
                         viewport={{ once: true }}
-                        className="grid lg:grid-cols-2 gap-8 mb-12"
+                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
                     >
-                        {projects.filter(project => project.featured).map((project, index) => (
+                        {projects.map((project, index) => (
                             <motion.div
                                 key={index}
                                 variants={itemVariants}
@@ -432,63 +446,6 @@ const App = () => {
                                     >
                                         <ExternalLink size={16} />
                                         Live Demo
-                                    </a>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-
-                    {/* Other Projects */}
-                    <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid md:grid-cols-2 gap-6"
-                    >
-                        {projects.filter(project => !project.featured).map((project, index) => (
-                            <motion.div
-                                key={index}
-                                variants={itemVariants}
-                                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-md card-hover border border-gray-200 dark:border-slate-700"
-                            >
-                                <div className="flex items-center justify-between mb-4">
-                                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{project.title}</h3>
-                                    <span className="text-sm text-gray-500 dark:text-gray-400">{project.year}</span>
-                                </div>
-                                
-                                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">{project.description}</p>
-                                
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                                        <span
-                                            key={techIndex}
-                                            className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-700 dark:text-gray-300 text-xs rounded"
-                                        >
-                                            {tech}
-                                        </span>
-                                    ))}
-                                    {project.technologies.length > 3 && (
-                                        <span className="px-2 py-1 bg-gray-100 dark:bg-slate-700 text-gray-500 dark:text-gray-400 text-xs rounded">
-                                            +{project.technologies.length - 3} more
-                                        </span>
-                                    )}
-                                </div>
-                                
-                                <div className="flex gap-4">
-                                    <a
-                                        href={project.github}
-                                        className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
-                                    >
-                                        <Github size={14} />
-                                        Code
-                                    </a>
-                                    <a
-                                        href={project.live}
-                                        className="flex items-center gap-1 text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-sm"
-                                    >
-                                        <ExternalLink size={14} />
-                                        Demo
                                     </a>
                                 </div>
                             </motion.div>
