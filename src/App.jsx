@@ -75,7 +75,7 @@ const App = () => {
             description: 'Created an intelligent Telegram bot to retrieve weather data based on ZIP codes. Integrated Gemini AI to recommend nearby places of interest with real-time weather fetching and intelligent suggestions.',
             technologies: ['Python', 'Telegram API', 'OpenWeatherMap API', 'Gemini AI'],
             github: 'https://github.com/ram-git23/Weather-Bot',
-            live: 'https://youtu.be/vZtm1wuA2yc?si=LE-yefseEj9AzO6e',
+            // live: 'https://youtu.be/vZtm1wuA2yc?si=LE-yefseEj9AzO6e',
             status: 'Completed',
             year: '2025',
             period: 'Feb 2025'
@@ -89,7 +89,7 @@ const App = () => {
             location: 'Bengaluru, India',
             period: '2022 - 2025',
             grade: 'CGPA: 9.02',
-            status: 'Current'
+            status: 'Completed'
         },
         {
             degree: 'II PUC (Pre-University)',
@@ -100,7 +100,7 @@ const App = () => {
             status: 'Completed'
         },
         {
-            degree: 'Class X (SSLC)',
+            degree: 'Class X (ICSE)',
             institution: 'Patel Public School',
             location: 'Bengaluru, India',
             period: '2019 - 2020',
@@ -111,15 +111,15 @@ const App = () => {
 
     const certifications = [
         {
-            title: 'Cisco Networking Academy: Networking Basics',
-            issuer: 'Cisco',
-            badge: 'https://www.credly.com/badges/6e480617-b5fb-4a09-bc6c-8dafdf5052a5',
-            year: '2024'
-        },
-        {
             title: 'Google Cybersecurity Professional Certificate',
             issuer: 'Coursera',
             badge: 'https://www.credly.com/badges/b6c22005-999f-407d-bd55-cdc6d3624852',
+            year: '2025'
+        },
+        {
+            title: 'Cisco Networking Academy: Networking Basics',
+            issuer: 'Cisco',
+            badge: 'https://www.credly.com/badges/6e480617-b5fb-4a09-bc6c-8dafdf5052a5',
             year: '2024'
         },
         {
